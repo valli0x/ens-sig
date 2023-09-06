@@ -1,6 +1,8 @@
 package signfile
 
 import (
+	"fmt"
+
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -9,16 +11,15 @@ func SignHash(hash []byte, privateKey string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	sig, err := crypto.Sign(hash, privECDSA)
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println()
 	return sig, nil
 }
 
-func HashPub(hash, sig []byte) (string, error) {
+func HashPubKey(hash, sig []byte) (address string, _ error) {
 	pubSigBytes, err := crypto.Ecrecover(hash, sig)
 	if err != nil {
 		return "", err
@@ -27,6 +28,5 @@ func HashPub(hash, sig []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	address := crypto.PubkeyToAddress(*pubSigECDSA).Hex()
-	return address, nil
+	return crypto.PubkeyToAddress(*pubSigECDSA).Hex(), nil
 }
