@@ -1,4 +1,4 @@
-package containers
+package boxes
 
 import (
 	"encoding/hex"

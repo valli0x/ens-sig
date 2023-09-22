@@ -3,20 +3,20 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"github.com/valli0x/ens-sig/containers"
+	"github.com/valli0x/ens-sig/boxes"
 )
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("ENS signing app")
-	w.Resize(fyne.NewSize(600, 500))
+	w := a.NewWindow("Multi-Sign App app")
+	w.Resize(fyne.NewSize(600, 600))
 	w.CenterOnScreen()
 
-	rootContainer, err := containers.Root(w, containers.SignContainer, containers.CheckContainer)
+	root, err := boxes.Root(w, boxes.SignContainer, boxes.CheckContainer)
 	if err != nil {
 		panic(err)
 	}
 
-	w.SetContent(rootContainer)
+	w.SetContent(root)
 	w.ShowAndRun()
 }
