@@ -1,4 +1,4 @@
-package containers
+package boxes
 
 import (
 	"fyne.io/fyne/v2"
@@ -10,9 +10,10 @@ import (
 const (
 	backName = "back"
 )
+
 type BoxConstructor func(w fyne.Window, back *widget.Button)(name string, _ *fyne.Container, _ error)
 
-func Root(w fyne.Window, containersList ...BoxConstructor) (*fyne.Container, error) {
+func Root(w fyne.Window, boxList ...BoxConstructor) (*fyne.Container, error) {
 	root := container.NewVBox()
 	back := widget.NewButton(backName, func() {
 		w.SetContent(root)
@@ -22,8 +23,8 @@ func Root(w fyne.Window, containersList ...BoxConstructor) (*fyne.Container, err
 	root.Add(head)
 	root.Add(layout.NewSpacer())
 
-	for _, containerConstructor := range containersList {
-		name, containerList, err := containerConstructor(w, back)
+	for _, constructor := range boxList {
+		name, containerList, err := constructor(w, back)
 		if err != nil {
 			return nil, err
 		}

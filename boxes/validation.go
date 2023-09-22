@@ -1,4 +1,4 @@
-package containers
+package boxes
 
 import (
 	"encoding/hex"
@@ -101,8 +101,6 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string , _ *fyne.C
 
 	return checkNameBox, checkBox, nil
 }
-
-
 
 func check(client *ethclient.Client, domain, filepath string, signature []byte) (bool, error) {
 	hash, err := filehash.FileHash(filepath)
