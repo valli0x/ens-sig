@@ -1,8 +1,6 @@
 package signfile
 
 import (
-	"fmt"
-
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -15,7 +13,6 @@ func SignHash(hash []byte, privateKey string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println()
 	return sig, nil
 }
 

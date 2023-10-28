@@ -2,24 +2,26 @@ package boxes
 
 import (
 	"encoding/hex"
+	"reflect"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/valli0x/ens-sig/ens"
 	"github.com/valli0x/ens-sig/filehash"
 	"github.com/valli0x/ens-sig/signfile"
+	ens "github.com/wealdtech/go-ens/v3"
 )
 
 const (
 	checkNameBox = "check"
 )
 
-func CheckContainer(w fyne.Window, back *widget.Button) (name string , _ *fyne.Container, _ error) {
+func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Container, _ error) {
 	head := widget.NewLabelWithStyle("Signature verification", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 
 	url := widget.NewLabelWithStyle("URL Ethereum node", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
@@ -97,7 +99,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string , _ *fyne.C
 		errEntry,
 		btn,
 		back,
-	) 
+	)
 
 	return checkNameBox, checkBox, nil
 }
@@ -111,9 +113,9 @@ func check(client *ethclient.Client, domain, filepath string, signature []byte) 
 	if err != nil {
 		return false, err
 	}
-	check, err := ens.CheckEnsAddress(client, domain, address)
+	resolved, err := ens.ReverseResolve(client, common.HexToAddress(address))
 	if err != nil {
 		return false, err
 	}
-	return check, nil
+	return reflect.DeepEqual(resolved, domain), nil
 }
