@@ -54,20 +54,23 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 
 		client, err := ethclient.Dial(urlEntry.Text)
 		if err != nil {
-			errStrBind.Set("error: " + err.Error())
+			errStrBind.Set("eth connect error: " + err.Error())
 			errStrBind.Reload()
+			return
 		}
 
 		signatureByte, err := hex.DecodeString(signatureEntry.Text)
 		if err != nil {
-			errStrBind.Set("error: " + err.Error())
+			errStrBind.Set("decode error: " + err.Error())
 			errStrBind.Reload()
+			return
 		}
 
 		ok, err := check(client, domainEntry.Text, filePathEntry.Text, signatureByte)
 		if err != nil {
-			errStrBind.Set("error: " + err.Error())
+			errStrBind.Set("chack signature error: " + err.Error())
 			errStrBind.Reload()
+			invalid.Show()
 			return
 		}
 
