@@ -67,8 +67,6 @@ func SignContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Con
 
 		sigStrBind.Set(hex.EncodeToString(signature))
 		sigStrBind.Reload()
-
-		privEntry.Text = ""
 	})
 
 	signBox := container.NewVBox(
