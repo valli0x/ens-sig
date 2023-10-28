@@ -68,6 +68,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 		if err != nil {
 			errStrBind.Set("error: " + err.Error())
 			errStrBind.Reload()
+			return
 		}
 
 		if ok {
