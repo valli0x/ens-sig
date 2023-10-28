@@ -68,7 +68,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 
 		ok, err := check(client, domainEntry.Text, filePathEntry.Text, signatureByte)
 		if err != nil {
-			errStrBind.Set("chack signature error: " + err.Error())
+			errStrBind.Set("check signature error: " + err.Error())
 			errStrBind.Reload()
 			invalid.Show()
 			return
