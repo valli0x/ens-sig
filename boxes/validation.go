@@ -7,7 +7,6 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/ethereum/go-ethereum/common"
@@ -30,20 +29,13 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 	domain := widget.NewLabelWithStyle("Domain", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	domainEntry := widget.NewEntry()
 
-	filePath := widget.NewLabelWithStyle("File", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
-	filePathBtn := ""
-	filePathEntry := widget.NewButton("open file", func() {
-		dialog.ShowFileOpen(func(uc fyne.URIReadCloser, err error) {
-			if uc != nil {
-				filePathBtn = uc.URI().Path()
-			}
-		}, w)
-	})
+	filePath := widget.NewLabelWithStyle("Fite path", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
+	filePathEntry := widget.NewEntry()
 
 	signature := widget.NewLabelWithStyle("Signature", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	signatureEntry := widget.NewEntry()
 
-	success := widget.NewLabelWithStyle("Success", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
+	success := widget.NewLabelWithStyle("Valid", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 	success.Hide()
 
 	invalid := widget.NewLabelWithStyle("Invalid", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
@@ -72,11 +64,12 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 			errStrBind.Reload()
 		}
 
-		ok, err := check(client, domainEntry.Text, filePathBtn, signatureByte)
+		ok, err := check(client, domainEntry.Text, filePathEntry.Text, signatureByte)
 		if err != nil {
 			errStrBind.Set("error: " + err.Error())
 			errStrBind.Reload()
 		}
+
 		if ok {
 			success.Show()
 		} else {
@@ -96,6 +89,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 		signatureEntry,
 		layout.NewSpacer(),
 		success,
+		invalid,
 		errEntry,
 		btn,
 		back,

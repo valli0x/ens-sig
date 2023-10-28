@@ -7,7 +7,6 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/tyler-smith/go-bip39"
@@ -25,15 +24,8 @@ func SignContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Con
 	privLb := widget.NewLabelWithStyle("Private Key or Mnemonic", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	privEntry := widget.NewPasswordEntry()
 
-	filePathLb := widget.NewLabelWithStyle("File", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
-	filePath := ""
-	filePathEntry := widget.NewButton("open file", func() {
-		dialog.ShowFileOpen(func(uc fyne.URIReadCloser, err error) {
-			if uc != nil {
-				filePath = uc.URI().Path()
-			}
-		}, w)
-	})
+	filePath := widget.NewLabelWithStyle("Fite path", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
+	filePathEntry := widget.NewEntry()
 
 	sigLb := widget.NewLabelWithStyle("Signature", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	sigStr := ""
@@ -48,7 +40,7 @@ func SignContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Con
 		errStrBind.Set("")
 		errStrBind.Reload()
 
-		filehash, err := filehash.FileHash(filePath)
+		filehash, err := filehash.FileHash(filePathEntry.Text)
 		if err != nil {
 			errStrBind.Set("error: " + err.Error())
 			errStrBind.Reload()
@@ -75,13 +67,15 @@ func SignContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Con
 
 		sigStrBind.Set(hex.EncodeToString(signature))
 		sigStrBind.Reload()
+
+		privEntry.Text = ""
 	})
 
 	signBox := container.NewVBox(
 		head,
 		privLb,
 		privEntry,
-		filePathLb,
+		filePath,
 		filePathEntry,
 		sigLb,
 		sigEntry,

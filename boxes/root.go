@@ -11,7 +11,7 @@ const (
 	backName = "back"
 )
 
-type BoxConstructor func(w fyne.Window, back *widget.Button)(name string, _ *fyne.Container, _ error)
+type BoxConstructor func(w fyne.Window, back *widget.Button) (name string, _ *fyne.Container, _ error)
 
 func Root(w fyne.Window, boxList ...BoxConstructor) (*fyne.Container, error) {
 	root := container.NewVBox()
