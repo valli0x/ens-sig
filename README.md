@@ -8,3 +8,5 @@ Next, it accesses the Ethereum blockchain through the client
 and receives a domain (or name) by reverse resolving. 
 Compares the entered name and the received one and outputs the result 
 of the comparison
+
+> 💡 You need to install [fyne](https://developer.fyne.io/started)
