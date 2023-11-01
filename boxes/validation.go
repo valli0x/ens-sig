@@ -29,7 +29,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 	domain := widget.NewLabelWithStyle("Domain", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	domainEntry := widget.NewEntry()
 
-	filePath := widget.NewLabelWithStyle("Fite path", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
+	filePath := widget.NewLabelWithStyle("File path", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	filePathEntry := widget.NewEntry()
 
 	signature := widget.NewLabelWithStyle("Signature", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})

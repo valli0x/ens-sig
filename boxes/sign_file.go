@@ -24,7 +24,7 @@ func SignContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Con
 	privLb := widget.NewLabelWithStyle("Private Key or Mnemonic", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	privEntry := widget.NewPasswordEntry()
 
-	filePath := widget.NewLabelWithStyle("Fite path", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
+	filePath := widget.NewLabelWithStyle("File path", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
 	filePathEntry := widget.NewEntry()
 
 	sigLb := widget.NewLabelWithStyle("Signature", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
