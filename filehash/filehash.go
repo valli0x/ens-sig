@@ -19,5 +19,6 @@ func FileHash(filepath string) ([]byte, error) {
 	if _, err := io.Copy(hash, file); err != nil {
 		return nil, err
 	}
+	
 	return hash.Sum(nil), nil
 }

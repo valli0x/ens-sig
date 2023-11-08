@@ -41,6 +41,9 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 	invalid := widget.NewLabelWithStyle("Invalid", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 	invalid.Hide()
 
+	resolve := widget.NewLabelWithStyle("", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
+	resolve.Hide()
+
 	errStr := ""
 	errStrBind := binding.BindString(&errStr)
 	errEntry := widget.NewLabelWithData(errStrBind)
@@ -51,6 +54,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 
 		success.Hide()
 		invalid.Hide()
+		resolve.Hide()
 
 		client, err := ethclient.Dial(urlEntry.Text)
 		if err != nil {
@@ -66,7 +70,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 			return
 		}
 
-		ok, err := check(client, domainEntry.Text, filePathEntry.Text, signatureByte)
+		resolved, ok, err := check(client, domainEntry.Text, filePathEntry.Text, signatureByte)
 		if err != nil {
 			errStrBind.Set("check signature error: " + err.Error())
 			errStrBind.Reload()
@@ -78,6 +82,8 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 			success.Show()
 		} else {
 			invalid.Show()
+			resolve.SetText(resolved)
+			resolve.Show()
 		}
 	})
 
@@ -94,6 +100,7 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 		layout.NewSpacer(),
 		success,
 		invalid,
+		resolve,
 		errEntry,
 		btn,
 		back,
@@ -102,18 +109,18 @@ func CheckContainer(w fyne.Window, back *widget.Button) (name string, _ *fyne.Co
 	return checkNameBox, checkBox, nil
 }
 
-func check(client *ethclient.Client, domain, filepath string, signature []byte) (bool, error) {
+func check(client *ethclient.Client, domain, filepath string, signature []byte) (string, bool, error) {
 	hash, err := filehash.FileHash(filepath)
 	if err != nil {
-		return false, err
+		return "", false, err
 	}
 	address, err := signfile.HashPubKey(hash, signature)
 	if err != nil {
-		return false, err
+		return "", false, err
 	}
 	resolved, err := ens.ReverseResolve(client, common.HexToAddress(address))
 	if err != nil {
-		return false, err
+		return "", false, err
 	}
-	return reflect.DeepEqual(resolved, domain), nil
+	return resolved, reflect.DeepEqual(resolved, domain), nil
 }
